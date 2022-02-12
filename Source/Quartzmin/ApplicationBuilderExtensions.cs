@@ -5,55 +5,54 @@ using Microsoft.Extensions.FileProviders;
 using System;
 using System.Reflection;
 
-namespace Quartzmin
+namespace Quartzmin;
+
+public static class ApplicationBuilderExtensions
 {
-    public static class ApplicationBuilderExtensions
+    public static void UseQuartzmin( this IApplicationBuilder app, QuartzminOptions options, Action<Services> configure = null )
     {
-        public static void UseQuartzmin( this IApplicationBuilder app, QuartzminOptions options, Action<Services> configure = null )
+        options = options ?? throw new ArgumentNullException( nameof( options ) );
+
+        app.UseFileServer( options );
+
+        var services = Services.Create( options );
+        configure?.Invoke( services );
+
+        app.Use( async ( context, next ) =>
         {
-            options = options ?? throw new ArgumentNullException( nameof( options ) );
-
-            app.UseFileServer( options );
-
-            var services = Services.Create( options );
-            configure?.Invoke( services );
-
-            app.Use( async ( context, next ) =>
-             {
-                 context.Items[typeof( Services )] = services;
-                 await next.Invoke();
-             } );
+            context.Items[typeof( Services )] = services;
+            await next.Invoke();
+        } );
        
-            app.UseEndpoints( endpoints =>
-            {
-                endpoints.MapControllerRoute( nameof( Quartzmin ), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}" );
-            } );
-        }
-
-        private static void UseFileServer( this IApplicationBuilder app, QuartzminOptions options )
+        app.UseEndpoints( endpoints =>
         {
-            IFileProvider fs;
-            if ( string.IsNullOrEmpty( options.ContentRootDirectory ) )
-                fs = new ManifestEmbeddedFileProvider( Assembly.GetExecutingAssembly(), "Content" );
-            else
-                fs = new PhysicalFileProvider( options.ContentRootDirectory );
+            endpoints.MapControllerRoute( nameof( Quartzmin ), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}" );
+        } );
+    }
 
-            var fsOptions = new FileServerOptions()
-            {
-                RequestPath = new PathString( $"{options.VirtualPathRoot}/Content" ),
-                EnableDefaultFiles = false,
-                EnableDirectoryBrowsing = false,
-                FileProvider = fs
-            };
+    private static void UseFileServer( this IApplicationBuilder app, QuartzminOptions options )
+    {
+        IFileProvider fs;
+        if ( string.IsNullOrEmpty( options.ContentRootDirectory ) )
+            fs = new ManifestEmbeddedFileProvider(typeof(ApplicationBuilderExtensions).Assembly, "Content" );
+        else
+            fs = new PhysicalFileProvider( options.ContentRootDirectory );
 
-            app.UseFileServer( fsOptions );
-        }
-
-        public static void AddQuartzmin( this IServiceCollection services )
+        var fsOptions = new FileServerOptions()
         {
-            services.AddControllers()
-                .AddApplicationPart( Assembly.GetExecutingAssembly() )
-                .AddNewtonsoftJson();
-        }
+            RequestPath = new PathString( $"{options.VirtualPathRoot}/Content" ),
+            EnableDefaultFiles = false,
+            EnableDirectoryBrowsing = false,
+            FileProvider = fs
+        };
+
+        app.UseFileServer( fsOptions );
+    }
+
+    public static void AddQuartzmin( this IServiceCollection services )
+    {
+        services.AddControllers()
+            .AddApplicationPart(typeof(ApplicationBuilderExtensions).Assembly)
+            .AddNewtonsoftJson();
     }
 }

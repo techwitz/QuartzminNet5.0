@@ -1,21 +1,20 @@
 ﻿using System.IO;
 
-namespace Quartzmin.Models
+namespace Quartzmin.Models;
+
+public class FormFile
 {
-    public class FormFile
+    readonly Microsoft.AspNetCore.Http.IFormFile _file;
+    public FormFile(Microsoft.AspNetCore.Http.IFormFile file) => _file = file;
+
+    public Stream GetStream() => _file.OpenReadStream();
+
+    public byte[] GetBytes()
     {
-		readonly Microsoft.AspNetCore.Http.IFormFile _file;
-        public FormFile(Microsoft.AspNetCore.Http.IFormFile file) => _file = file;
-
-        public Stream GetStream() => _file.OpenReadStream();
-
-        public byte[] GetBytes()
+        using (var stream = new MemoryStream())
         {
-            using (var stream = new MemoryStream())
-            {
-                GetStream().CopyTo(stream);
-                return stream.ToArray();
-            }
+            GetStream().CopyTo(stream);
+            return stream.ToArray();
         }
     }
 }

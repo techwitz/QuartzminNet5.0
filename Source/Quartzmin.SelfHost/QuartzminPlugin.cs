@@ -6,32 +6,32 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Quartzmin.SelfHost
+namespace Quartzmin.SelfHost;
+
+public class QuartzminPlugin : ISchedulerPlugin
 {
-    public class QuartzminPlugin : ISchedulerPlugin
+    public string Url { get; set; }
+
+    public string DefaultDateFormat { get; set; }
+    public string DefaultTimeFormat { get; set; }
+
+    public bool UseLocalTime { get; set; }
+
+    public string Logo { get; set; }
+    public string ProductName { get; set; }
+
+    private IScheduler _scheduler;
+    private IDisposable _webApp;
+
+    public Task Initialize(string pluginName, IScheduler scheduler, CancellationToken cancellationToken = default(CancellationToken))
     {
-        public string Url { get; set; }
+        _scheduler = scheduler;
+        return Task.FromResult(0);
+    }
 
-        public string DefaultDateFormat { get; set; }
-        public string DefaultTimeFormat { get; set; }
-
-        public bool UseLocalTime { get; set; }
-
-        public string Logo { get; set; }
-        public string ProductName { get; set; }
-
-        private IScheduler _scheduler;
-        private IDisposable _webApp;
-
-        public Task Initialize(string pluginName, IScheduler scheduler, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            _scheduler = scheduler;
-            return Task.FromResult(0);
-        }
-
-        public Task Start(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var host = Microsoft.AspNetCore.WebHost.CreateDefaultBuilder().Configure(app => {
+    public Task Start(CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var host = Microsoft.AspNetCore.WebHost.CreateDefaultBuilder().Configure(app => {
                 app.UseQuartzmin(CreateQuartzminOptions());
             }).ConfigureServices(services => {
                 services.AddQuartzmin();
@@ -42,38 +42,37 @@ namespace Quartzmin.SelfHost
             .UseUrls(Url)
             .Build();
 
-            _webApp = host;
+        _webApp = host;
 
-            return host.StartAsync();
-        }
-
-        public Task Shutdown(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            _webApp.Dispose();
-            return Task.FromResult(0);
-        }
-
-        private QuartzminOptions CreateQuartzminOptions()
-        {
-            var options = new QuartzminOptions()
-            {
-                Scheduler = _scheduler,
-            };
-
-            if (!string.IsNullOrEmpty(DefaultDateFormat))
-                options.DefaultDateFormat = DefaultDateFormat;
-            if (!string.IsNullOrEmpty(DefaultTimeFormat))
-                options.DefaultTimeFormat = DefaultTimeFormat;
-            if (!string.IsNullOrEmpty(Logo))
-                options.Logo = Logo;
-            if (!string.IsNullOrEmpty(ProductName))
-                options.ProductName = ProductName;
-
-            if (UseLocalTime)
-                options.UseLocalTime = UseLocalTime;
-
-            return options;
-        }
-
+        return host.StartAsync();
     }
+
+    public Task Shutdown(CancellationToken cancellationToken = default(CancellationToken))
+    {
+        _webApp.Dispose();
+        return Task.FromResult(0);
+    }
+
+    private QuartzminOptions CreateQuartzminOptions()
+    {
+        var options = new QuartzminOptions()
+        {
+            Scheduler = _scheduler,
+        };
+
+        if (!string.IsNullOrEmpty(DefaultDateFormat))
+            options.DefaultDateFormat = DefaultDateFormat;
+        if (!string.IsNullOrEmpty(DefaultTimeFormat))
+            options.DefaultTimeFormat = DefaultTimeFormat;
+        if (!string.IsNullOrEmpty(Logo))
+            options.Logo = Logo;
+        if (!string.IsNullOrEmpty(ProductName))
+            options.ProductName = ProductName;
+
+        if (UseLocalTime)
+            options.UseLocalTime = UseLocalTime;
+
+        return options;
+    }
+
 }

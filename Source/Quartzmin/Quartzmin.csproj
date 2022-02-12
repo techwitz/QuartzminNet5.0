@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net5.0</TargetFrameworks>
+		<TargetFramework>net6.0</TargetFramework>
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -10,7 +10,7 @@
 
 		<Product>Quartzmin</Product>
 		<Title>Web management tool for Quartz.NET</Title>
-		<RepositoryUrl>https://github.com/evgenykorolyuk/QuartzminNet5.0</RepositoryUrl>
+		<RepositoryUrl>https://github.com/evgenykorolyuk/QuartzminNet6.0</RepositoryUrl>
 		<EmbeddedResourceUseDependentUponConvention>false</EmbeddedResourceUseDependentUponConvention>
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -23,12 +23,12 @@
 	<ItemGroup>
 		<PackageReference Include="Handlebars.Net" Version="1.9.5" />
 		<PackageReference Include="JsonSubTypes" Version="1.8.0" />
-		<PackageReference Include="Quartz" Version="3.3.2" />
+		<PackageReference Include="Quartz" Version="3.3.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.6" />
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.6" />
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.2" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

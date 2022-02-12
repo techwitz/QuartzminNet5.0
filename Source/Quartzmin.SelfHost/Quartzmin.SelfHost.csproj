@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -9,7 +9,7 @@
 
     <Product>Quartzmin.SelfHost</Product>
     <Title>Quartzmin Self Host</Title>
-    <RepositoryUrl>https://github.com/evgenykorolyuk/QuartzminNet5.0</RepositoryUrl>
+    <RepositoryUrl>https://github.com/techwitz/QuartzminNet5.0.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

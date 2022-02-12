@@ -1,12 +1,11 @@
 ﻿using System.Text.Json;
 
-namespace Quartzmin.Helpers
+namespace Quartzmin.Helpers;
+
+public class JsonPascalCaseNamingPolicy : JsonNamingPolicy
 {
-    public class JsonPascalCaseNamingPolicy : JsonNamingPolicy
+    public override string ConvertName( string name )
     {
-        public override string ConvertName( string name )
-        {
-            return name;
-        }
+        return name;
     }
 }
