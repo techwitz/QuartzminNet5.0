@@ -31,7 +31,7 @@ jobs:
       - name: install dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.x'
+          dotnet-version: '6.x'
           
       - name: dotnet build
         run: dotnet build Quartzmin.sln /p:AssemblyVersion=${{steps.version-step.outputs.major}}.${{steps.version-step.outputs.minor}}.0.${{steps.version-step.outputs.patch}} /p:Version=${{steps.version-step.outputs.major}}.${{steps.version-step.outputs.minor}}.0.${{steps.version-step.outputs.patch}}
