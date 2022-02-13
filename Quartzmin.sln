@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quartzmin.SelfHost", "Sourc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B669A725-70A9-4E80-BAC7-9765A14CAAA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore31", "Source\Examples\AspNetCore31\AspNetCore31.csproj", "{99D97A4F-703E-42C6-89D2-5752D9707AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore6", "Source\Examples\AspNetCore6\AspNetCore6.csproj", "{99D97A4F-703E-42C6-89D2-5752D9707AA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

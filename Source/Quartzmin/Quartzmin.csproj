@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
